@@ -24,11 +24,15 @@
         </tr>
         @foreach($tasks->sortBy('id') as $task)
             <tr>
-                <td>{{ $task->id }}</td>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $task->comment }}</td>
                 <td>
                     <button>作業中</button>
-                    <button>削除</button>
+                    <form method="POST" action="{{ route('tasks.destroy', $task->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">削除</button>
+                    </form>
                 </td>
             </tr>
         @endforeach
@@ -39,6 +43,5 @@
         <input type="text" name="comment">
         <button type="submit">追加</button>
     </form>
-    
 </body>
 </html>
