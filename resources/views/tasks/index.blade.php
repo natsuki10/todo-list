@@ -27,7 +27,24 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $task->comment }}</td>
                 <td>
-                    <button>作業中</button>
+                @if ($task->status === '作業中')
+                    <form method="POST" action="{{ route('tasks.update', $task->id) }}">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="status" value="完了">
+                        <button type="submit">作業中</button>
+                    </form>
+                @elseif ($task->status === '完了')
+                    <form method="POST" action="{{ route('tasks.update', $task->id) }}">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="status" value="作業中">
+                        <button type="submit">完了</button>
+                    </form>
+                @endif
+                    </form>
+                </td>
+                <td> 
                     <form method="POST" action="{{ route('tasks.destroy', $task->id) }}">
                         @csrf
                         @method('DELETE')
