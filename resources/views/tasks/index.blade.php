@@ -22,20 +22,32 @@
             <th>コメント</th>
             <th>状態</th>
         </tr>
-        @foreach($tasks->sortBy('id') as $task)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $task->comment }}</td>
-                <td>
-                    <button>作業中</button>
-                    <form method="POST" action="{{ route('tasks.destroy', $task->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">削除</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
+    @foreach($tasks->sortBy('id') as $task)
+        <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $task->comment }}</td>
+            <td>
+                <form method="POST" action="{{ route('tasks.update', $task->id) }}">
+                    @csrf
+                    @method('PUT')
+                    @if ($task->status === '作業中')
+                        <input type="hidden" name="status" value="完了">
+                        <button type="submit">作業中</button>
+                    @elseif ($task->status === '完了')
+                        <input type="hidden" name="status" value="作業中">
+                        <button type="submit">完了</button>
+                    @endif
+                </form>
+            </td>
+            <td> 
+                <form method="POST" action="{{ route('tasks.destroy', $task->id) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">削除</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
     </table>
     <h2>新規タスクの追加</h2>
     <form method="POST" action="{{ route('tasks.store') }}">

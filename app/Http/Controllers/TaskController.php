@@ -30,6 +30,18 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
+    public function update(Request $request, Task $task)
+    {
+        $newStatus = $request->input('status');
+    
+        if ($newStatus === '作業中' || $newStatus === '完了') {
+        $task->status = $newStatus;
+        $task->save();
+        }
+    
+        return redirect()->route('tasks.index');
+    }
+
     public function destroy(Task $task)
     {
         $task->delete();
